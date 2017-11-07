@@ -1,6 +1,14 @@
+/*==============================================
+* 모듈러 연산을 이용하는 CIRCULAR-QUEUE
+* 
+**==============================================
+*/
+
+
 #include <stdio.h>
 #define MAXSIZE 10   
-
+#define FALSE 0 
+#define TRUE !FALSE
 
 typedef struct _Queue{
 	int rear ; 
@@ -43,58 +51,49 @@ void createQ(Queue *q){
 
 }
 
-
+//
 int isFull(Queue *q){
-	if(MAXSIZE-1 == q->rear ){
-		if(q->arr[0] != 0){
-			printf("==> Queue is Full\n") ; 
-			return 1 ; 
-		}else{
-			q->rear = -1 ; 
-		}
+	if(q->arr[((q->rear+1) % (MAXSIZE))] == 0 ){
+		return FALSE ; 
+	}else{
+		printf("==> Queue is Full \n") ; 
+		return TRUE ; 
 	}
-	return 0 ; 
 }
 
 
 int insertData(Queue *q, int input){
 	if(isFull(q)){
-		return 0 ;
+		return FALSE ;
 	}
-
-	q->arr[++q->rear] = input ;
+	q->rear++ ; 
+	q->rear %= MAXSIZE ; 
+	q->arr[q->rear] = input ;
 	printArray(q) ; 
-	return 1 ; 
+	return TRUE ; 
 }
 
 
-
-
+//
 int isEmpty(Queue *q){
-	if(MAXSIZE -1 == q->front ){
-		if(q->arr[0] == 0){
-			printf("Queue is Empty\n") ; 
-			return 1 ;
-		}else{
-			q->front = -1 ; 
-		}
-	}
-
-	if(q->arr[q->front+1] == 0){
+	if( q->arr[(q->front + 1) % MAXSIZE] == 0 ){
 		printf("Queue is Empty\n") ; 
-		return 1 ;
+		return TRUE ;
+	}else{
+		return FALSE; 
 	}
-
-	return 0 ; 
 }
 
 int deleteData(Queue *q){
 	int retValue ; 
 	if(isEmpty(q)){
-		return 0 ; 
+		return FALSE ; 
 	}
-	retValue = q->arr[++q->front] ;
+	q->front++ ; 
+	q->front %= MAXSIZE ;
+	retValue = q->arr[q->front] ; 
 	q->arr[q->front] = 0 ; 
+
 	printf("==> OutputData : %d\n", retValue) ; 
 	printArray(q) ; 
 }
@@ -109,7 +108,6 @@ int main(){
 
 	insertData(pQ, 20) ; 
 	deleteData(pQ) ; 
-
 
 	insertData(pQ, 50) ; 
 	insertData(pQ, 50) ; 
@@ -156,6 +154,18 @@ int main(){
 	insertData(pQ, 50) ; 
 	insertData(pQ, 50) ; 
 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
+	deleteData(pQ) ; 
 
-	return 0 ; 
+
+	return FALSE ; 
 }
